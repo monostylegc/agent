@@ -5,7 +5,7 @@ from typing import List, Tuple, Dict, Any
 import asyncio
 from bs4 import BeautifulSoup
 
-from browser import Browser
+from zenbrowser import Browser
 
 # 비동기 초기화를 위한 전역 변수
 browser = None
