@@ -60,14 +60,13 @@ async def scrape_page_with_doi(doi: str, timeout: int = 60000) -> Tuple[str, Bea
             await page.wait_for_load_state("networkidle", timeout=timeout)
 
             html = await page.content()
-            title = await page.title()
-            safe_title = re.sub(r'[^a-zA-Z0-9\s]', '', title)
+           
             soup = BeautifulSoup(html, 'html.parser')
             
             # 스크래핑 후 HTML 정리
             soup = clean_soup(soup)
             
-            return safe_title, soup
+            return soup
         except Exception as e:
             print(f"DOI {doi} 스크랩 중 오류 발생: {e}")
             # 빈 결과 대신 오류 표시와 최소 결과 반환

@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.13"
 resolution-markers = [
     "platform_machine == 'x86_64' and sys_platform == 'darwin'",
@@ -726,6 +727,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/38/85/4c896de87bc20915c5bf7be32fd325f4dfdbd0b262b4e49597a11d909ef7/langchain_core-0.3.45.tar.gz", hash = "sha256:a39b8446495d1ea97311aa726478c0a13ef1d77cb7644350bad6d9d3c0141a0c", size = 529844 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b6/8b/c41dbe55a502b71d84734be75c40d5a62fd6024dd8417c9ca2417e308782/langchain_core-0.3.45-py3-none-any.whl", hash = "sha256:fe560d644c102c3f5dcfb44eb5295e26d22deab259fdd084f6b1b55a0350b77c", size = 415868 },
+]
+
+[[package]]
+name = "langchain-docling"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "docling" },
+    { name = "langchain-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/59/37/b75a8f55b16c209bb16cfc390fda6598431c5834041ab26b22204ef7c9eb/langchain_docling-0.2.0.tar.gz", hash = "sha256:94d11e5ec611b8a17809de9efba303eef2f0fc817f7ebdc46d737e58ecd88820", size = 4522 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bc/9f/ee56bbb9d3ad97e5b4d1403e105fa00faf91a23bff1e2a76065735319aeb/langchain_docling-0.2.0-py3-none-any.whl", hash = "sha256:eff3e7cfcbd5bc56b9356108ec0475ee0487ec1227914b3cebb60fe288dae04c", size = 4802 },
 ]
 
 [[package]]
@@ -1729,6 +1743,7 @@ dependencies = [
     { name = "langchain" },
     { name = "langchain-anthropic" },
     { name = "langchain-community" },
+    { name = "langchain-docling" },
     { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "playwright" },
@@ -1741,6 +1756,7 @@ requires-dist = [
     { name = "langchain", specifier = ">=0.3.20" },
     { name = "langchain-anthropic", specifier = ">=0.3.10" },
     { name = "langchain-community", specifier = ">=0.3.19" },
+    { name = "langchain-docling", specifier = ">=0.2.0" },
     { name = "langchain-openai", specifier = ">=0.3.8" },
     { name = "langgraph", specifier = ">=0.3.11" },
     { name = "playwright", specifier = ">=1.50.0" },
