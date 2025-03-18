@@ -1,10 +1,13 @@
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
-import re
 import bs4
 import os.path
-import asyncio
 from typing import List, Tuple, Dict, Any
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 
 # 브라우저 초기화 및 로그인 함수
 async def login(headless=False):
@@ -34,15 +37,15 @@ async def login(headless=False):
             print('저장된 세션이 만료되었습니다. 다시 로그인합니다.')
             await page.goto('https://medline.inje.ac.kr/login')
             await page.wait_for_load_state("networkidle")
-            await page.fill('input[name="id"]', '108514')
-            await page.fill('input[name="password"]', 'gs12341234!')
+            await page.fill('input[name="id"]', os.getenv("MEDLINE_ID"))
+            await page.fill('input[name="password"]', os.getenv("MEDLINE_PASSWORD"))
             await page.press('input[name="password"]', 'Enter')
             await page.wait_for_load_state("networkidle")
             # Playwright의 state 저장
             await context.storage_state(path="storage_state.json")
             print('로그인 성공. 세션 정보가 저장되었습니다.')
 
-async def scrape_page_with_doi(doi: str, timeout: int = 60000) -> Tuple[str, BeautifulSoup]:
+async def scrape_page_with_doi(doi: str) -> BeautifulSoup:
     """DOI를 사용하여 페이지를 스크랩합니다."""
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=False)        
@@ -56,9 +59,11 @@ async def scrape_page_with_doi(doi: str, timeout: int = 60000) -> Tuple[str, Bea
         try:
             url = f"https://doi-org-ssl.mproxy.inje.ac.kr/{doi}"
             
-            await page.goto(url, timeout=timeout)
-            await page.wait_for_load_state("networkidle", timeout=timeout)
+            await page.goto(url)
 
+            await page.wait_for_function("document.readyState === 'complete'", timeout=30000)
+            await page.wait_for_selector("body", timeout=10000)
+            
             html = await page.content()
            
             soup = BeautifulSoup(html, 'html.parser')
@@ -70,7 +75,7 @@ async def scrape_page_with_doi(doi: str, timeout: int = 60000) -> Tuple[str, Bea
         except Exception as e:
             print(f"DOI {doi} 스크랩 중 오류 발생: {e}")
             # 빈 결과 대신 오류 표시와 최소 결과 반환
-            return f"Error: {e}", BeautifulSoup("<html><body><p>Error occurred</p></body></html>", "html.parser")
+            return          
         finally:
             await page.close()
 
