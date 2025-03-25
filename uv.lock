@@ -1403,6 +1403,19 @@ wheels = [
 ]
 
 [[package]]
+name = "langgraph-supervisor"
+version = "0.0.11"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langgraph" },
+    { name = "langgraph-prebuilt" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2e/34/4f2b4d97ddaa5b49e74313dcf7f165b2ad536c5f5c40f08daa671fcddc90/langgraph_supervisor-0.0.11.tar.gz", hash = "sha256:dfc30a173b2b92a52429fd15f276dcf2bfb5771a0e09130e415d38acbbb58702", size = 12834 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7b/7f/8998b233ba15ef9d991f3ae2531b880e03d17c324f3be73e4fbe1e2a7a7b/langgraph_supervisor-0.0.11-py3-none-any.whl", hash = "sha256:f68e13178acf9a98ae7fade936dcac00b079edcfdd24a4f51763d310701fe3c4", size = 10194 },
+]
+
+[[package]]
 name = "langsmith"
 version = "0.3.15"
 source = { registry = "https://pypi.org/simple" }
@@ -2768,6 +2781,7 @@ dependencies = [
     { name = "langchain-docling" },
     { name = "langchain-openai" },
     { name = "langgraph" },
+    { name = "langgraph-supervisor" },
     { name = "playwright" },
     { name = "xmltodict" },
     { name = "zendriver" },
@@ -2784,6 +2798,7 @@ requires-dist = [
     { name = "langchain-docling", specifier = ">=0.2.0" },
     { name = "langchain-openai", specifier = ">=0.3.8" },
     { name = "langgraph", specifier = ">=0.3.11" },
+    { name = "langgraph-supervisor", specifier = ">=0.0.11" },
     { name = "playwright", specifier = ">=1.50.0" },
     { name = "xmltodict", specifier = ">=0.14.2" },
     { name = "zendriver", specifier = ">=0.5.1" },

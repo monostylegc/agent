@@ -20,6 +20,8 @@ from tools import search_pubmed, scrape_with_agent, login
 
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.store.memory import InMemoryStore
+from langgraph_supervisor import create_supervisor
+from pydantic import BaseModel
 
 # 환경 변수 로드
 load_dotenv()
@@ -27,20 +29,39 @@ load_dotenv()
 checkpointer = InMemorySaver()
 store = InMemoryStore()
 
-# 상태 정의
-class MainState(TypedDict):
-    messages: Annotated[MessagesState, add_messages]
-    planning_steps: List[str]
-    current_step: str
-    search_results: List[Document]
-    report: str
-    review_result: str
-    report_result: str
-
+#여러가지 모델
 model1 = ChatOpenAI(model="gpt-4o-mini", temperature=0.1)
 model2 = ChatOpenAI(model="gpt-4o", temperature=0.1)
 model3 = ChatAnthropic(model="claude-3-7-sonnet-20250219", temperature=0.1)
 
+planner_agent = create_react_agent(
+    model=model1,
+    tools=[],
+    prompt="""
+    """,
+    name="planner_agent"
+)
+
+writer_agent = create_react_agent(
+    model=model1,
+    tools=[scrape_with_agent,search_pubmed],
+    prompt="""
+    """,
+    name="writer_agent"
+)
+
+class ReviewerResponse(BaseModel):
+    review: str
+    accept: bool
+
+reviewer_agent = create_react_agent(
+    model=model1,
+    tools=[],
+    prompt="""
+    """,
+    name="reviewer_agent",
+    response_format=ReviewerResponse
+)
 
 async def main():
     await login()
