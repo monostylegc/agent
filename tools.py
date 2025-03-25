@@ -7,10 +7,16 @@ from browser_use import Agent
 from browser_use.browser.browser import Browser
 from browser_use.browser.context import BrowserContextConfig, BrowserContext
 
+from langchain_core.tools import tool
+
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 
 import asyncio
+from typing import List
+from langchain_core.documents import Document
+from langchain_community.retrievers import PubMedRetriever
+from pydantic import BaseModel
 
 load_dotenv()
 
@@ -55,7 +61,17 @@ async def login(headless=False):
                 json.dump(cookies, f)
             print('로그인 성공. 세션 정보가 저장되었습니다.')
 
-async def scrape_with_agent(doi: str):
+
+@tool
+async def scrape_with_agent(doi: str, question: str):
+    """
+    Access the full text site of a paper using its DOI to find information that is not available in the abstract.
+    Args:
+        doi: str
+        question: str
+    Returns:
+        str: The answer to the question from the paper information.
+    """
     browser_config = BrowserContextConfig(
         user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
         cookies_file="cookies.json"
@@ -65,20 +81,42 @@ async def scrape_with_agent(doi: str):
     context = BrowserContext(browser=browser, config=browser_config)
     
     url = f"https://doi-org-ssl.mproxy.inje.ac.kr/{doi}"
-
+    
     agent = Agent(
         browser_context=context,
         llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
-        task=f"{url}을 방문해서 논문 전문을 스크랩해줘. DOI not found 라는 문장이 있으면 없는 DOI라고 출력해줘. "
+        task=f"Visit {url} and find the answer to {question} from the paper information."
     )
 
-    result = await agent.run()
-    print(result)
-    await context.close()
+    history = await agent.run()
+    
+    result = history.final_result()
 
-async def main():
-    await login()
-    await scrape_with_agent("10.1016/j.spinee.2023.05.012")
+    await browser.close()
 
-if __name__ == "__main__":
-    asyncio.run(main())
+    return result
+
+@tool
+def search_pubmed(query: str) -> List[Document]:
+    """
+    Search PubMed for a specific query.
+    Args:
+        query: str
+    Returns:
+        List[Document]: A list of documents containing the search results.
+    """
+    retriever = PubMedRetriever(top_k_results=10)
+    return retriever.invoke(query)
+
+
+# dummy_doi = "10.1016/j.spinee.2023.05.012"
+# dummy_question = "논문의 제목은 무엇인가?"
+
+# async def main():
+#     await login()
+#     result = await scrape_with_agent(dummy_doi, dummy_question)
+#     print(result)
+
+# if __name__ == "__main__":
+#     asyncio.run(main())
+
