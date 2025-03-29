@@ -1416,6 +1416,19 @@ wheels = [
 ]
 
 [[package]]
+name = "langgraph-swarm"
+version = "0.0.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain-core" },
+    { name = "langgraph" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/62/b8/1ccc14ec6a10ac9b33ea02cd93af52e8999d1411d372f6b66e6a589410bd/langgraph_swarm-0.0.7.tar.gz", hash = "sha256:3abc365ff53079944eb536deaa336860b6183476754fa42fb3403a3dcdb0aeb5", size = 10117 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/33/7b/e19dd72505044a3acb017211739b3d9ac7be5f3172b6c9262a7c2f750b08/langgraph_swarm-0.0.7-py3-none-any.whl", hash = "sha256:1e0232b76c35362b8fa476fe9381da0230685d9af10fd9ec0a4bc14c84fb72c2", size = 8054 },
+]
+
+[[package]]
 name = "langsmith"
 version = "0.3.15"
 source = { registry = "https://pypi.org/simple" }
@@ -2782,6 +2795,7 @@ dependencies = [
     { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "langgraph-supervisor" },
+    { name = "langgraph-swarm" },
     { name = "playwright" },
     { name = "xmltodict" },
     { name = "zendriver" },
@@ -2799,6 +2813,7 @@ requires-dist = [
     { name = "langchain-openai", specifier = ">=0.3.8" },
     { name = "langgraph", specifier = ">=0.3.11" },
     { name = "langgraph-supervisor", specifier = ">=0.0.11" },
+    { name = "langgraph-swarm", specifier = ">=0.0.7" },
     { name = "playwright", specifier = ">=1.50.0" },
     { name = "xmltodict", specifier = ">=0.14.2" },
     { name = "zendriver", specifier = ">=0.5.1" },
