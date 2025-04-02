@@ -1,0 +1,12 @@
+[project]
+name = "research"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langgraph>=0.3.22",
+    "langgraph-supervisor>=0.0.15",
+    "langgraph-swarm>=0.0.8",
+    "xmltodict>=0.14.2",
+]
