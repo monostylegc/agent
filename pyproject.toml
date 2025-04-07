@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "langchain-teddynote>=0.3.45",
     "langgraph>=0.3.22",
     "langgraph-supervisor>=0.0.15",
     "langgraph-swarm>=0.0.8",
